@@ -18,8 +18,8 @@ For a simple Docker-based install of the Counterparty software stack, see [this 
 Then, download and install `counterblock`:
 
 ```
-$ git clone https://github.com/CounterpartyXCP/counterblock.git
-$ cd counterblock
+$ git clone https://github.com/terhnt/unoblock.git
+$ cd unoblock
 $ sudo pip3 install -r requirements.txt
 $ sudo python3 setup.py install
 ```
