@@ -17,13 +17,13 @@ REGULAR_DUST_SIZE = 5430
 MULTISIG_DUST_SIZE = 5430 * 2
 ORDER_BTC_DUST_LIMIT_CUTOFF = MULTISIG_DUST_SIZE
 
-BTC = 'BTC'
-XBTC = 'XBTC'
-XCP = 'XCP'
+BTC = 'UNO'
+XBTC = 'XUNO'
+XCP = 'XUP'
 
-BTC_NAME = "Bitcoin"
-XCP_NAME = "Counterparty"
-APP_NAME = "counterblock"
+BTC_NAME = "Unobtanium"
+XCP_NAME = "Unoparty"
+APP_NAME = "unoblock"
 COUNTERPARTY_APP_NAME = XCP_NAME.lower()
 
 BTC_TO_XCP = BTC + '/' + XCP
@@ -32,12 +32,12 @@ XCP_TO_BTC = XCP + '/' + BTC
 MAX_REORG_NUM_BLOCKS = 10  # max reorg we'd likely ever see
 MAX_FORCED_REORG_NUM_BLOCKS = 20  # but let us go deeper when messages are out of sync
 
-QUOTE_ASSETS = [BTC, XBTC, XCP, 'PEPECASH', 'BITCRYSTALS', 'FLDC', 'RUSTBITS', 'SCOTCOIN', 'DATABITS', 'BITCORN', 'MAFIACASH']  # define the priority for quote asset
+QUOTE_ASSETS = [BTC, XBTC, XCP, 'UNOCASH']  # define the priority for quote asset
 MARKET_LIST_QUOTE_ASSETS = [XCP, BTC]  # define the order in the market list
 
-DEFAULT_BACKEND_PORT_REGTEST = 28332
-DEFAULT_BACKEND_PORT_TESTNET = 18332
-DEFAULT_BACKEND_PORT = 8332
+DEFAULT_BACKEND_PORT_REGTEST = 18445
+DEFAULT_BACKEND_PORT_TESTNET = 65531
+DEFAULT_BACKEND_PORT = 65535
 
 DEFAULT_LOG_SIZE_KB = 20000
 DEFAULT_LOG_NUM_FILES = 5
@@ -92,11 +92,11 @@ def init_base(args):
     # first block
     global BLOCK_FIRST
     if TESTNET:
-        BLOCK_FIRST = 310000
+        BLOCK_FIRST = 2000
     elif REGTEST:
-        BLOCK_FIRST = 100
+        BLOCK_FIRST = 0
     else:
-        BLOCK_FIRST = 278270
+        BLOCK_FIRST = 1744150
 
     global LATEST_BLOCK_INIT
     LATEST_BLOCK_INIT = {'block_index': BLOCK_FIRST, 'block_time': None, 'block_hash': None}
@@ -129,7 +129,7 @@ def init_base(args):
             BACKEND_PORT = DEFAULT_BACKEND_PORT
     try:
         BACKEND_PORT = int(BACKEND_PORT)
-        assert int(BACKEND_PORT) > 1 and int(BACKEND_PORT) < 65535
+        assert int(BACKEND_PORT) > 1 and int(BACKEND_PORT) <= 65535
     except:
         raise Exception("Please specify a valid port number for the backend-port configuration parameter")
 
@@ -137,7 +137,7 @@ def init_base(args):
     if args.backend_user:
         BACKEND_USER = args.backend_user
     else:
-        BACKEND_USER = 'rpc'
+        BACKEND_USER = 'unobtaniumrpc'
 
     global BACKEND_PASSWORD
     if args.backend_password:
@@ -166,14 +166,14 @@ def init_base(args):
         COUNTERPARTY_PORT = args.counterparty_port
     else:
         if TESTNET:
-            COUNTERPARTY_PORT = 14000
+            COUNTERPARTY_PORT = 14120
         elif REGTEST:
-            COUNTERPARTY_PORT = 24000
+            COUNTERPARTY_PORT = 24120
         else:
-            COUNTERPARTY_PORT = 4000
+            COUNTERPARTY_PORT = 4120
     try:
         COUNTERPARTY_PORT = int(COUNTERPARTY_PORT)
-        assert int(COUNTERPARTY_PORT) > 1 and int(COUNTERPARTY_PORT) < 65535
+        assert int(COUNTERPARTY_PORT) > 1 and int(COUNTERPARTY_PORT) <= 65535
     except:
         raise Exception("Please specify a valid port number for the counterparty-port configuration parameter")
 
@@ -209,7 +209,7 @@ def init_base(args):
         MONGODB_PORT = 27017
     try:
         MONGODB_PORT = int(MONGODB_PORT)
-        assert int(MONGODB_PORT) > 1 and int(MONGODB_PORT) < 65535
+        assert int(MONGODB_PORT) > 1 and int(MONGODB_PORT) <= 65535
     except:
         raise Exception("Please specify a valid port number for the mongodb-port configuration parameter")
 
@@ -250,7 +250,7 @@ def init_base(args):
         REDIS_PORT = 6379
     try:
         REDIS_PORT = int(REDIS_PORT)
-        assert int(REDIS_PORT) > 1 and int(REDIS_PORT) < 65535
+        assert int(REDIS_PORT) > 1 and int(REDIS_PORT) <= 65535
     except:
         raise Exception("Please specify a valid port number for the redis-port configuration parameter")
 
@@ -289,14 +289,14 @@ def init_base(args):
         RPC_PORT = args.rpc_port
     else:
         if TESTNET:
-            RPC_PORT = 14100
+            RPC_PORT = 14420
         elif REGTEST:
-            RPC_PORT = 24100
+            RPC_PORT = 24420
         else:
-            RPC_PORT = 4100
+            RPC_PORT = 4420
     try:
         RPC_PORT = int(RPC_PORT)
-        assert int(RPC_PORT) > 1 and int(RPC_PORT) < 65535
+        assert int(RPC_PORT) > 1 and int(RPC_PORT) <= 65535
     except:
         raise Exception("Please specify a valid port number for the rpc-port configuration parameter")
 
