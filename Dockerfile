@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-MAINTAINER Counterparty Developers <dev@counterparty.io>
+MAINTAINER Unoparty Developers <dev@unobtanium.uno>
 
 # PyEnv
 ENV PYENV_ROOT /root/.pyenv
@@ -67,14 +67,14 @@ RUN apt-get update -q \
             cython
 
 # Install
-COPY requirements.txt /counterblock/
-COPY setup.py /counterblock/
-COPY ./counterblock/lib/config.py /counterblock/counterblock/lib/
-WORKDIR /counterblock
+COPY requirements.txt /unoblock/
+COPY setup.py /unoblock/
+COPY ./counterblock/lib/config.py /unoblock/counterblock/lib/
+WORKDIR /unoblock
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade -vv setuptools
 RUN pip3 install -r requirements.txt
-COPY . /counterblock
+COPY . /unoblock
 RUN python3 setup.py develop
 
 COPY docker/server.conf /root/.config/counterblock/server.conf
