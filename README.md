@@ -13,7 +13,7 @@ For a simple Docker-based install of the Counterparty software stack, see [this 
 
 # Manual installation
 
-(Linux only.) First, install `mongodb` and `redis`, and have an instance of `bitcoind` (`addrindex` branch) and [`counterparty-server`](https://github.com/CounterpartyXCP/counterparty-lib) running.
+(Linux only.) First, install `mongodb` and `redis`, and have an instance of `unotaniumd` (`addrindex` branch) and [`unoparty-server`](https://github.com/terhnt/unoparty-lib) running.
 
 Then, download and install `counterblock`:
 
