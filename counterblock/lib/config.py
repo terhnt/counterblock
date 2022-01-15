@@ -96,7 +96,7 @@ def init_base(args):
     elif REGTEST:
         BLOCK_FIRST = 0
     else:
-        BLOCK_FIRST = 1744150
+        BLOCK_FIRST = 1800120
 
     global LATEST_BLOCK_INIT
     LATEST_BLOCK_INIT = {'block_index': BLOCK_FIRST, 'block_time': None, 'block_hash': None}
