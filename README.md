@@ -1,7 +1,7 @@
 [![Slack Status](http://slack.counterparty.io/badge.svg)](http://slack.counterparty.io)
 
-counterblock
-==============
+counterblock orig ( copy of master, with small uno change )
+============================================================
 
 `counterblock` provides additional services to Counterwallet beyond those offered in the API provided by `counterparty-server`. It features a full-fledged JSON RPC-based API, which services Counterwallet as well as any 3rd party services which wish to use it. `counterblock` has an extensible architecture, and developers may write custom plugins for it, which are loaded dynamically and allow them to extend `counterblock` with new parsing functionality, write gateways to other currencies or services, and much more.
 
