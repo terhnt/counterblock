@@ -21,8 +21,8 @@ import flask
 import jsonrpc
 import pymongo
 
-from counterblock.lib import config, cache, database, util, blockchain, blockfeed, messages
-from counterblock.lib.processor import API
+from unoblock.lib import config, cache, database, util, blockchain, blockfeed, messages
+from unoblock.lib.processor import API
 
 API_MAX_LOG_SIZE = 10 * 1024 * 1024  # max log size of 20 MB before rotation (make configurable later)
 API_MAX_LOG_COUNT = 10
@@ -34,8 +34,8 @@ logger = logging.getLogger(__name__)
 
 def serve_api():
     # Preferneces are just JSON objects... since we don't force a specific form to the wallet on
-    # the server side, this makes it easier for 3rd party wallets (i.e. not Counterwallet) to fully be able to
-    # use counterblockd to not only pull useful data, but also load and store their own preferences, containing
+    # the server side, this makes it easier for 3rd party wallets (i.e. not Unowallet) to fully be able to
+    # use unoblockd to not only pull useful data, but also load and store their own preferences, containing
     # whatever data they need
 
     app = flask.Flask(__name__)
@@ -354,7 +354,7 @@ def serve_api():
             start_dt=datetime.datetime.utcfromtimestamp(start_ts),
             end_dt=datetime.datetime.utcfromtimestamp(end_ts) if now_ts != end_ts else None)
 
-        # make API call to counterparty-server to get all of the data for the specified address
+        # make API call to unoparty-server to get all of the data for the specified address
         txns = []
         d = get_address_history(address, start_block=start_block_index, end_block=end_block_index)
         # mash it all together
@@ -372,7 +372,7 @@ def serve_api():
         return txns
 
     @API.add_method
-    def proxy_to_counterpartyd(method='', params=[]):
+    def proxy_to_unopartyd(method='', params=[]):
         if method == 'sql':
             raise Exception("Invalid method")
         result = None
@@ -418,7 +418,7 @@ def serve_api():
             tx_logger.info("***CSP SECURITY --- %s" % data_json)
             return flask.Response('', 200)
 
-        #"ping" counterpartyd to test
+        #"ping" unopartyd to test
         cp_s = time.time()
         cp_result_valid = True
         try:
@@ -427,7 +427,7 @@ def serve_api():
             cp_result_valid = False
         cp_e = time.time()
 
-        #"ping" counterblockd to test, as well
+        #"ping" unoblockd to test, as well
         cb_s = time.time()
         cb_result_valid = True
         cb_result_error_code = None
@@ -457,39 +457,39 @@ def serve_api():
         cb_e = time.time()
 
         result = {
-            'counterparty-server': 'OK' if cp_result_valid else 'NOT OK',
-            'counterparty-server_ver': '%s.%s.%s' % (
+            'unoparty-server': 'OK' if cp_result_valid else 'NOT OK',
+            'unoparty-server_ver': '%s.%s.%s' % (
                 cp_status['version_major'], cp_status['version_minor'], cp_status['version_revision']) if cp_result_valid else '?',
-            'counterparty-server_last_block': cp_status['last_block'] if cp_result_valid else '?',
-            'counterparty-server_last_message_index': cp_status['last_message_index'] if cp_result_valid else '?',
-            'counterparty-server_caught_up': config.state['cp_caught_up'],
-            'counterparty-server_check_elapsed': cp_e - cp_s,
+            'unoparty-server_last_block': cp_status['last_block'] if cp_result_valid else '?',
+            'unoparty-server_last_message_index': cp_status['last_message_index'] if cp_result_valid else '?',
+            'unoparty-server_caught_up': config.state['cp_caught_up'],
+            'unoparty-server_check_elapsed': cp_e - cp_s,
 
-            'counterblock': 'OK' if cb_result_valid else 'NOT OK',
-            'counterblock_ver': config.VERSION,
-            'counterblock_check_elapsed': cb_e - cb_s,
-            'counterblock_error': cb_result_error_code,
-            'counterblock_last_message_index': config.state['last_message_index'],
-            'counterblock_caught_up': blockfeed.fuzzy_is_caught_up(),
-            'counterblock_cur_block': {'block_hash': config.state['cur_block'].get('block_hash', '??'),
+            'unoblock': 'OK' if cb_result_valid else 'NOT OK',
+            'unoblock_ver': config.VERSION,
+            'unoblock_check_elapsed': cb_e - cb_s,
+            'unoblock_error': cb_result_error_code,
+            'unoblock_last_message_index': config.state['last_message_index'],
+            'unoblock_caught_up': blockfeed.fuzzy_is_caught_up(),
+            'unoblock_cur_block': {'block_hash': config.state['cur_block'].get('block_hash', '??'),
                                        'block_index': config.state['cur_block'].get('block_index', '??')},
-            'counterblock_last_processed_block': {'block_hash': config.state['my_latest_block'].get('block_hash', '??'),
+            'unoblock_last_processed_block': {'block_hash': config.state['my_latest_block'].get('block_hash', '??'),
                                                   'block_index': config.state['my_latest_block'].get('block_index', '??')},
         }
 
         response_code = 200
-        # error if we couldn't make a successful call to counterparty-server or counterblock's API (500)
+        # error if we couldn't make a successful call to unoparty-server or unoblock's API (500)
         if not cp_result_valid or not cb_result_valid:
             response_code = 500
-            result['ERROR'] = "counterparty-server_api_contact_error"
-        # error 510 if the counterparty-server last block is more than 1 block behind backend
-        elif not result['counterparty-server_caught_up']:
+            result['ERROR'] = "unoparty-server_api_contact_error"
+        # error 510 if the unoparty-server last block is more than 1 block behind backend
+        elif not result['unoparty-server_caught_up']:
             response_code = 510
-            result['ERROR'] = "counterparty-server_not_caught_up"
-        # error 511 if the counterblock last block is more than 1 block behind counterparty-server
-        elif not result['counterblock_caught_up']:
+            result['ERROR'] = "unoparty-server_not_caught_up"
+        # error 511 if the unoblock last block is more than 1 block behind unoparty-server
+        elif not result['unoblock_caught_up']:
             response_code = 511
-            result['ERROR'] = "counterblock_not_caught_up"
+            result['ERROR'] = "unoblock_not_caught_up"
         else:
             result['ERROR'] = None
 

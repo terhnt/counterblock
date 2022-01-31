@@ -10,7 +10,7 @@ import decimal
 from repoze.lru import lru_cache
 from pycoin import encoding
 
-from counterblock.lib import config, util
+from unoblock.lib import config, util
 
 D = decimal.Decimal
 decimal.getcontext().prec = 8
@@ -115,7 +115,7 @@ def getaddressinfo(address):
         #raw_transactions = reversed(search_raw_transactions(address))
         raw_transactions = search_raw_transactions(address)
 
-    # TODO: This code was disabling counterwallet and it really doesn't has reason to exist
+    # TODO: This code was disabling unowallet and it really doesn't has reason to exist
     # if someone is reading this and wondering why this comment is here, it's because i'm
     # blindly commenting it out because it worked in production, but don't understand if
     # there's a far reaching implication of it

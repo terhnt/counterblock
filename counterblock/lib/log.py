@@ -1,7 +1,7 @@
 import os
 import logging
 
-from counterblock.lib import config
+from unoblock.lib import config
 
 
 def set_up(verbose):

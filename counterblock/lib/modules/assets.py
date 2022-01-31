@@ -1,7 +1,7 @@
 """
-Implements counterwallet asset-related support as a counterblock plugin
+Implements unowallet asset-related support as a unoblock plugin
 
-Python 2.x, as counterblock is still python 2.x
+Python 2.x, as unoblock is still python 2.x
 """
 import os
 import sys
@@ -20,9 +20,9 @@ import calendar
 
 import dateutil.parser
 
-from counterblock.lib import config, util, blockfeed, blockchain
-from counterblock.lib.modules import ASSETS_PRIORITY_PARSE_ISSUANCE, ASSETS_PRIORITY_BALANCE_CHANGE
-from counterblock.lib.processor import MessageProcessor, MempoolMessageProcessor, BlockProcessor, StartUpProcessor, CaughtUpProcessor, RollbackProcessor, API, start_task
+from unoblock.lib import config, util, blockfeed, blockchain
+from unoblock.lib.modules import ASSETS_PRIORITY_PARSE_ISSUANCE, ASSETS_PRIORITY_BALANCE_CHANGE
+from unoblock.lib.processor import MessageProcessor, MempoolMessageProcessor, BlockProcessor, StartUpProcessor, CaughtUpProcessor, RollbackProcessor, API, start_task
 
 ASSET_MAX_RETRY = 3
 
@@ -134,7 +134,7 @@ def task_compile_extended_asset_info():
 @API.add_method
 def get_normalized_balances(addresses):
     """
-    This call augments counterparty's get_balances with a normalized_quantity field. It also will include any owned
+    This call augments unoparty's get_balances with a normalized_quantity field. It also will include any owned
     assets for an address, even if their balance is zero.
     NOTE: Does not retrieve BTC balance. Use get_address_info for that.
     """

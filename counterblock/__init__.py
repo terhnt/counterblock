@@ -3,5 +3,5 @@ import sys
 
 
 def server_main():
-    from counterblock import server
+    from unoblock import server
     server.main()

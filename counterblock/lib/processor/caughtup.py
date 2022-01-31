@@ -2,8 +2,8 @@ import gevent
 import logging
 import time
 
-from counterblock.lib import config
-from counterblock.lib.processor import CaughtUpProcessor, CORE_FIRST_PRIORITY, CORE_LAST_PRIORITY, start_task
+from unoblock.lib import config
+from unoblock.lib.processor import CaughtUpProcessor, CORE_FIRST_PRIORITY, CORE_LAST_PRIORITY, start_task
 
 logger = logging.getLogger(__name__)
 
