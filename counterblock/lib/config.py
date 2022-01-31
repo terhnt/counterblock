@@ -3,16 +3,16 @@
 ##
 # CONSTANTS
 ##
-VERSION = "1.4.0"  # should keep up with counterblockd repo's release tag
+VERSION = "1.4.0"  # should keep up with unoblockd repo's release tag
 
-DB_VERSION = 24  # a db version increment will cause counterblockd to rebuild its database off of counterpartyd
+DB_VERSION = 24  # a db version increment will cause unoblockd to rebuild its database off of unopartyd
 
 UNIT = 100000000
 
 MARKET_PRICE_DERIVE_NUM_POINTS = 8  # number of last trades over which to derive the market price (via WVAP)
 
-# FROM counterpartyd
-# NOTE: These constants must match those in counterpartyd/lib/py
+# FROM unopartyd
+# NOTE: These constants must match those in unopartyd/lib/py
 REGULAR_DUST_SIZE = 5430
 MULTISIG_DUST_SIZE = 5430 * 2
 ORDER_BTC_DUST_LIMIT_CUTOFF = MULTISIG_DUST_SIZE
@@ -24,7 +24,7 @@ XCP = 'XUP'
 BTC_NAME = "Unobtanium"
 XCP_NAME = "Unoparty"
 APP_NAME = "unoblock"
-COUNTERPARTY_APP_NAME = XCP_NAME.lower()
+UNOPARTY_APP_NAME = XCP_NAME.lower()
 
 BTC_TO_XCP = BTC + '/' + XCP
 XCP_TO_BTC = XCP + '/' + BTC
@@ -47,7 +47,7 @@ DEFAULT_LOG_NUM_FILES = 5
 ##
 mongo_db = None  # will be set on server init
 state = {
-    'caught_up': False  # atomic state variable, set to True when counterpartyd AND counterblockd are caught up
+    'caught_up': False  # atomic state variable, set to True when unopartyd AND unoblockd are caught up
     # the rest of this is added dynamically
 }
 
@@ -154,46 +154,46 @@ def init_base(args):
     global BACKEND_URL_NOAUTH
     BACKEND_URL_NOAUTH = 'http://' + BACKEND_CONNECT + ':' + str(BACKEND_PORT) + '/'
 
-    # counterpartyd RPC connection
-    global COUNTERPARTY_CONNECT
-    if args.counterparty_connect:
-        COUNTERPARTY_CONNECT = args.counterparty_connect
+    # unopartyd RPC connection
+    global UNOPARTY_CONNECT
+    if args.unoparty_connect:
+        UNOPARTY_CONNECT = args.unoparty_connect
     else:
-        COUNTERPARTY_CONNECT = 'localhost'
+        UNOPARTY_CONNECT = 'localhost'
 
-    global COUNTERPARTY_PORT
-    if args.counterparty_port:
-        COUNTERPARTY_PORT = args.counterparty_port
+    global UNOPARTY_PORT
+    if args.unoparty_port:
+        UNOPARTY_PORT = args.unoparty_port
     else:
         if TESTNET:
-            COUNTERPARTY_PORT = 14120
+            UNOPARTY_PORT = 14120
         elif REGTEST:
-            COUNTERPARTY_PORT = 24120
+            UNOPARTY_PORT = 24120
         else:
-            COUNTERPARTY_PORT = 4120
+            UNOPARTY_PORT = 4120
     try:
-        COUNTERPARTY_PORT = int(COUNTERPARTY_PORT)
-        assert int(COUNTERPARTY_PORT) > 1 and int(COUNTERPARTY_PORT) <= 65535
+        UNOPARTY_PORT = int(UNOPARTY_PORT)
+        assert int(UNOPARTY_PORT) > 1 and int(UNOPARTY_PORT) <= 65535
     except:
-        raise Exception("Please specify a valid port number for the counterparty-port configuration parameter")
+        raise Exception("Please specify a valid port number for the unoparty-port configuration parameter")
 
-    global COUNTERPARTY_USER
-    if args.counterparty_user:
-        COUNTERPARTY_USER = args.counterparty_user
+    global UNOPARTY_USER
+    if args.unoparty_user:
+        UNOPARTY_USER = args.unoparty_user
     else:
-        COUNTERPARTY_USER = 'rpc'
+        UNOPARTY_USER = 'rpc'
 
-    global COUNTERPARTY_PASSWORD
-    if args.counterparty_password:
-        COUNTERPARTY_PASSWORD = args.counterparty_password
+    global UNOPARTY_PASSWORD
+    if args.unoparty_password:
+        UNOPARTY_PASSWORD = args.unoparty_password
     else:
-        COUNTERPARTY_PASSWORD = 'rpcpassword'
+        UNOPARTY_PASSWORD = 'rpcpassword'
 
-    global COUNTERPARTY_RPC
-    COUNTERPARTY_RPC = 'http://' + COUNTERPARTY_CONNECT + ':' + str(COUNTERPARTY_PORT) + '/api/'
+    global UNOPARTY_RPC
+    UNOPARTY_RPC = 'http://' + UNOPARTY_CONNECT + ':' + str(UNOPARTY_PORT) + '/api/'
 
-    global COUNTERPARTY_AUTH
-    COUNTERPARTY_AUTH = (COUNTERPARTY_USER, COUNTERPARTY_PASSWORD) if (COUNTERPARTY_USER and COUNTERPARTY_PASSWORD) else None
+    global UNOPARTY_AUTH
+    UNOPARTY_AUTH = (UNOPARTY_USER, UNOPARTY_PASSWORD) if (UNOPARTY_USER and UNOPARTY_PASSWORD) else None
 
     # mongodb
     global MONGODB_CONNECT
@@ -218,11 +218,11 @@ def init_base(args):
         MONGODB_DATABASE = args.mongodb_database
     else:
         if TESTNET:
-            MONGODB_DATABASE = 'counterblockd_testnet'
+            MONGODB_DATABASE = 'unoblockd_testnet'
         elif REGTEST:
-            MONGODB_DATABASE = 'counterblockd_regtest'
+            MONGODB_DATABASE = 'unoblockd_regtest'
         else:
-            MONGODB_DATABASE = 'counterblockd'
+            MONGODB_DATABASE = 'unoblockd'
 
     global MONGODB_USER
     if args.mongodb_user:
@@ -316,8 +316,8 @@ def init_base(args):
     # OTHER SETTINGS
 
     # System (logging, pids, etc)
-    global COUNTERBLOCKD_DIR
-    COUNTERBLOCKD_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+    global UNOBLOCKD_DIR
+    UNOBLOCKD_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 
     global LOG
     if args.log_file is False:  # no file logging
@@ -368,13 +368,13 @@ def load_schemas():
     """initialize json schema for json asset and feed validation"""
     import os
     import json
-    assert COUNTERBLOCKD_DIR
+    assert UNOBLOCKD_DIR
 
     global ASSET_SCHEMA
-    ASSET_SCHEMA = json.load(open(os.path.join(COUNTERBLOCKD_DIR, 'schemas', 'asset.schema.json')))
+    ASSET_SCHEMA = json.load(open(os.path.join(UNOBLOCKD_DIR, 'schemas', 'asset.schema.json')))
 
     global FEED_SCHEMA
-    FEED_SCHEMA = json.load(open(os.path.join(COUNTERBLOCKD_DIR, 'schemas', 'feed.schema.json')))
+    FEED_SCHEMA = json.load(open(os.path.join(UNOBLOCKD_DIR, 'schemas', 'feed.schema.json')))
 
 
 def init(args):

@@ -1,5 +1,5 @@
 """
-Implements counterwallet enhanced asset info and betting feed support as a counterblock plugin
+Implements unowallet enhanced asset info and betting feed support as a unoblock plugin
 
 Python 3.x since v1.4.0
 """
@@ -21,9 +21,9 @@ import flask
 import jsonrpc
 import dateutil.parser
 
-from counterblock.lib import config, util, blockfeed, blockchain
-from counterblock.lib.modules import BETTING_PRIORITY_PARSE_BROADCAST
-from counterblock.lib.processor import MessageProcessor, MempoolMessageProcessor, BlockProcessor, StartUpProcessor, CaughtUpProcessor, RollbackProcessor, API, start_task
+from unoblock.lib import config, util, blockfeed, blockchain
+from unoblock.lib.modules import BETTING_PRIORITY_PARSE_BROADCAST
+from unoblock.lib.processor import MessageProcessor, MempoolMessageProcessor, BlockProcessor, StartUpProcessor, CaughtUpProcessor, RollbackProcessor, API, start_task
 
 FEED_MAX_RETRY = 3
 

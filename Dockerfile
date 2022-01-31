@@ -52,7 +52,7 @@ ENV LC_ALL en_US.UTF-8
 # Set home dir env variable
 ENV HOME /root
 
-# Install extra counterblock deps
+# Install extra unoblock deps
 RUN apt-get update -q \
             && apt-get -y upgrade \
             && apt-get install -y --no-install-recommends \
@@ -69,7 +69,7 @@ RUN apt-get update -q \
 # Install
 COPY requirements.txt /unoblock/
 COPY setup.py /unoblock/
-COPY ./counterblock/lib/config.py /unoblock/counterblock/lib/
+COPY ./unoblock/lib/config.py /unoblock/unoblock/lib/
 WORKDIR /unoblock
 RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade -vv setuptools
@@ -77,14 +77,14 @@ RUN pip3 install -r requirements.txt
 COPY . /unoblock
 RUN python3 setup.py develop
 
-COPY docker/server.conf /root/.config/counterblock/server.conf
-COPY docker/modules.conf /root/.config/counterblock/modules.conf
-COPY docker/modules.conf /root/.config/counterblock/modules.testnet.conf
-COPY docker/modules.conf /root/.config/counterblock/modules.regtest.conf
-COPY docker/counterwallet.conf /root/.config/counterblock/counterwallet.conf
+COPY docker/server.conf /root/.config/unoblock/server.conf
+COPY docker/modules.conf /root/.config/unoblock/modules.conf
+COPY docker/modules.conf /root/.config/unoblock/modules.testnet.conf
+COPY docker/modules.conf /root/.config/unoblock/modules.regtest.conf
+COPY docker/unowallet.conf /root/.config/unoblock/unowallet.conf
 COPY docker/start.sh /usr/local/bin/start.sh
 RUN chmod a+x /usr/local/bin/start.sh
 
-EXPOSE 4100 4101 4102 14100 14101 14102
+EXPOSE 4420 4421 4422 14420 14421 14422
 
 ENTRYPOINT ["start.sh"]

@@ -1,7 +1,7 @@
 """
-Implements counterwallet support as a counterblock plugin
+Implements unowallet support as a unoblock plugin
 
-Python 2.x, as counterblock is still python 2.x
+Python 2.x, as unoblock is still python 2.x
 """
 import os
 import sys
@@ -21,16 +21,16 @@ import calendar
 
 import dateutil.parser
 
-from counterblock.lib import config, util, blockfeed, blockchain, messages
-from counterblock.lib.processor import MessageProcessor, MempoolMessageProcessor, BlockProcessor, StartUpProcessor, CaughtUpProcessor, RollbackProcessor, API, start_task, CORE_FIRST_PRIORITY
-from counterblock.lib.modules import CWALLET_PRIORITY_PARSE_FOR_SOCKETIO, CWALLET_PRIORITY_PUBLISH_MEMPOOL
+from unoblock.lib import config, util, blockfeed, blockchain, messages
+from unoblock.lib.processor import MessageProcessor, MempoolMessageProcessor, BlockProcessor, StartUpProcessor, CaughtUpProcessor, RollbackProcessor, API, start_task, CORE_FIRST_PRIORITY
+from unoblock.lib.modules import CWALLET_PRIORITY_PARSE_FOR_SOCKETIO, CWALLET_PRIORITY_PUBLISH_MEMPOOL
 
-from counterblock.lib.processor import startup
+from unoblock.lib.processor import startup
 
 PREFERENCES_MAX_LENGTH = 100000  # in bytes, as expressed in JSON
-ARMORY_UTXSVR_PORT_MAINNET = 6590
-ARMORY_UTXSVR_PORT_TESTNET = 6591
-ARMORY_UTXSVR_PORT_REGTEST = 6592
+ARMORY_UTXSVR_PORT_MAINNET = 6490
+ARMORY_UTXSVR_PORT_TESTNET = 6491
+ARMORY_UTXSVR_PORT_REGTEST = 6492
 
 FUZZY_MAX_WALLET_MESSAGES_STORED = 1000
 
@@ -42,13 +42,13 @@ module_config = {}
 def _read_config():
     configfile = configparser.SafeConfigParser(
         defaults=os.environ, allow_no_value=True, inline_comment_prefixes=('#', ';'))
-    config_path = os.path.join(config.config_dir, 'counterwallet%s.conf' % config.net_path_part)
+    config_path = os.path.join(config.config_dir, 'unowallet%s.conf' % config.net_path_part)
     logger.info("Loading config at: %s" % config_path)
     try:
         configfile.read(config_path)
         assert configfile.has_section('Default')
     except:
-        logging.warn("Could not find or parse counterwallet%s.conf config file!" % config.net_path_part)
+        logging.warn("Could not find or parse unowallet%s.conf config file!" % config.net_path_part)
 
     # armory-utxsvr
     if configfile.has_option('Default', 'armory-utxsvr-host'):
@@ -613,7 +613,7 @@ def init():
         if download:
             logger.info("Downloading {}".format(mmdbName))
             # TODO: replace with pythonic way to do this!
-            cmd = "cd '{}' && curl -L -O https://counterparty.io/bootstrap/GeoLite2-City.mmdb.gz && gzip -d GeoLite2-City.mmdb.gz".format(config.data_dir)
+            cmd = "cd '{}' && curl -L -O https://unoparty.io/bootstrap/GeoLite2-City.mmdb.gz && gzip -d GeoLite2-City.mmdb.gz".format(config.data_dir)
             util.subprocess_cmd(cmd)
         else:
             logger.info("{} database up to date. Not downloading.".format(mmdbName))
@@ -625,7 +625,7 @@ def init():
         logger.warn("GeoLite2-City.mmdb not found, download from https://maxmind.com/ the GeoLite2-City and put in {}".format(geoip_data_path))
 
     if not module_config['SUPPORT_EMAIL']:
-        logger.warn("Support email setting not set: To enable, please specify an email for the 'support-email' setting in your counterblockd.conf")
+        logger.warn("Support email setting not set: To enable, please specify an email for the 'support-email' setting in your unoblockd.conf")
 
 
 @RollbackProcessor.subscribe()

@@ -13,7 +13,7 @@ import appdirs
 import hashlib
 import decimal
 
-from counterblock.lib import config
+from unoblock.lib import config
 
 D = decimal.Decimal
 logger = logging.getLogger(__name__)
@@ -138,17 +138,17 @@ def extract_bitcoincore_config():
 
             for bitcoind_key in config_keys:
                 if bitcoind_key in conf:
-                    counterparty_key = config_keys[bitcoind_key]
-                    bitcoincore_config[counterparty_key] = conf[bitcoind_key]
+                    unoparty_key = config_keys[bitcoind_key]
+                    bitcoincore_config[unoparty_key] = conf[bitcoind_key]
 
     return bitcoincore_config
 
 
-def extract_counterparty_server_config():
-    counterparty_server_config = {}
+def extract_unoparty_server_config():
+    unoparty_server_config = {}
 
     # Figure out the path to the server.conf file
-    configdir = appdirs.user_config_dir(appauthor=config.XCP_NAME, appname=config.COUNTERPARTY_APP_NAME, roaming=True)
+    configdir = appdirs.user_config_dir(appauthor=config.XCP_NAME, appname=config.UNOPARTY_APP_NAME, roaming=True)
     server_configfile = os.path.join(configdir, 'server.conf')
 
     # Extract contents of server.conf to build service_url
@@ -166,21 +166,21 @@ def extract_counterparty_server_config():
                 'backend-port': 'backend-port',
                 'backend-user': 'backend-user',
                 'backend-password': 'backend-password',
-                'rpc-port': 'counterparty-port',
-                'rpc-user': 'counterparty-user',
-                'rpc-password': 'counterparty-password',
+                'rpc-port': 'unoparty-port',
+                'rpc-user': 'unoparty-user',
+                'rpc-password': 'unoparty-password',
             }
 
             for server_key in config_keys:
                 if server_key in conf:
-                    counterparty_key = config_keys[server_key]
-                    counterparty_server_config[counterparty_key] = conf[server_key]
+                    unoparty_key = config_keys[server_key]
+                    unoparty_server_config[unoparty_key] = conf[server_key]
 
-    return counterparty_server_config
+    return unoparty_server_config
 
 
 def generate_config_files():
-    from counterblock.server import CONFIG_ARGS
+    from unoblock.server import CONFIG_ARGS
 
     data_dir, config_dir, log_dir = config.get_dirs()
     if not os.path.isdir(data_dir):
@@ -197,7 +197,7 @@ def generate_config_files():
 
         bitcoincore_config = extract_bitcoincore_config()
         server_known_config.update(bitcoincore_config)
-        counterparty_server_config = extract_counterparty_server_config()
-        server_known_config.update(counterparty_server_config)
+        unoparty_server_config = extract_unoparty_server_config()
+        server_known_config.update(unoparty_server_config)
 
         generate_config_file(server_configfile, CONFIG_ARGS, server_known_config)

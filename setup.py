@@ -7,10 +7,10 @@ import os
 import sys
 import logging
 
-from counterblock.lib import config
+from unoblock.lib import config
 
 class generate_configuration_files(Command):
-    description = "Generate configfiles from old counterparty-server and/or bitcoind config files"
+    description = "Generate configfiles from old unoparty-server and/or bitcoind config files"
     user_options = []
 
     def initialize_options(self):
@@ -19,11 +19,11 @@ class generate_configuration_files(Command):
         pass
 
     def run(self):
-        from counterblock.lib import config_util
+        from unoblock.lib import config_util
         config_util.generate_config_files()
 
 class install(_install):
-    description = "Install counterblock and dependencies"
+    description = "Install unoblock and dependencies"
 
     def run(self):
         caller = sys._getframe(2)
@@ -63,22 +63,22 @@ required_packages = [
 ]
 
 setup_options = {
-    'name': 'counterblock',
+    'name': 'unoblock',
     'version': config.VERSION,
-    'author': 'Counterparty Developers',
-    'author_email': 'support@counterparty.io',
-    'maintainer': 'Counteparty Developers',
-    'maintainer_email': 'dev@counterparty.io',
-    'url': 'http://counterparty.io',
+    'author': 'Unoparty Developers',
+    'author_email': 'support@unoparty.io',
+    'maintainer': 'Unoparty Developers',
+    'maintainer_email': 'dev@unoparty.io',
+    'url': 'http://unoparty.io',
     'license': 'MIT',
-    'description': 'counterblock server',
-    'long_description': 'Implements support for extended functionality for counterparty-lib',
-    'keywords': 'counterparty, bitcoin, counterblock',
+    'description': 'unoblock server',
+    'long_description': 'Implements support for extended functionality for unoparty-lib',
+    'keywords': 'unoparty, unobtanium, unoblock',
     'classifiers': [
         "Programming Language :: Python",
     ],
-    'download_url': 'https://github.com/CounterpartyXCP/counterblock/releases/tag/%s' % config.VERSION,
-    'provides': ['counterblock'],
+    'download_url': 'https://github.com/terhnt/unoblock/releases/tag/%s' % config.VERSION,
+    'provides': ['unoblock'],
     'packages': find_packages(),
     'zip_safe': False,
     'setup_requires': ['appdirs', ],
@@ -86,7 +86,7 @@ setup_options = {
     'include_package_data': True,
     'entry_points': {
         'console_scripts': [
-            'counterblock = counterblock:server_main',
+            'unoblock = unoblock:server_main',
         ]
     },
     'cmdclass': {
@@ -94,7 +94,7 @@ setup_options = {
         'generate_configuration_files': generate_configuration_files
     },
     'package_data': {
-        'counterblock.schemas': ['asset.schema.json', 'feed.schema.json'],
+        'unoblock.schemas': ['asset.schema.json', 'feed.schema.json'],
     }
 }
 
