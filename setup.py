@@ -46,7 +46,7 @@ required_packages = [
     #'python-bitcoinlib==0.10.1', <-- restore this when python-bitcoinlib 0.10.x with bech32 support is released
     'pymongo==3.2.2',
     'gevent==1.1.1',
-    'greenlet==0.4.9',
+    'greenlet==1.1.2',
     'grequests==0.3.0',
     'redis==2.10.5',
     'pyzmq==22.3.0',
@@ -57,7 +57,7 @@ required_packages = [
     'rfc3987==1.3.6',
     'aniso8601==1.1.0',
     'maxminddb==2.0.3',
-    'colorama==0.3.7',
+    'colorama==0.4.3',
     'configobj==5.0.6',
     'repoze.lru==0.6'
 ]
