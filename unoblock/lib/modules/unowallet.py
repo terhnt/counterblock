@@ -613,7 +613,7 @@ def init():
         if download:
             logger.info("Downloading {}".format(mmdbName))
             # TODO: replace with pythonic way to do this!
-            cmd = "cd '{}' && curl -L -O https://unoparty.io/bootstrap/GeoLite2-City.mmdb.gz && gzip -d GeoLite2-City.mmdb.gz".format(config.data_dir)
+            cmd = "cd '{}' && curl -L -O https://counterparty.io/bootstrap/GeoLite2-City.mmdb.gz && gzip -d GeoLite2-City.mmdb.gz".format(config.data_dir)
             util.subprocess_cmd(cmd)
         else:
             logger.info("{} database up to date. Not downloading.".format(mmdbName))
