@@ -92,7 +92,7 @@ def init_base(args):
     # first block
     global BLOCK_FIRST
     if TESTNET:
-        BLOCK_FIRST = 2000
+        BLOCK_FIRST = 700
     elif REGTEST:
         BLOCK_FIRST = 0
     else:
