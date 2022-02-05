@@ -274,7 +274,7 @@ def process_cp_blockfeed():
                 assert cp_running_info['last_block']['block_index']
                 config.state['cp_latest_block_index'] = cp_running_info['last_block']['block_index']
             elif cp_running_info['db_caught_up']:
-                config.state['cp_latest_block_index'] = cp_running_info['bitcoin_block_count']
+                config.state['cp_latest_block_index'] = cp_running_info['unobtanium_block_count']
             else:
                 assert False
         except:
@@ -285,7 +285,7 @@ def process_cp_blockfeed():
             time.sleep(3)
             continue
 
-        config.state['cp_backend_block_index'] = cp_running_info['bitcoin_block_count']
+        config.state['cp_backend_block_index'] = cp_running_info['unobtanium_block_count']
         config.state['cp_caught_up'] = cp_running_info['db_caught_up']
 
         if config.state['my_latest_block']['block_index'] < config.state['cp_latest_block_index']:
